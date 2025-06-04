@@ -12,7 +12,7 @@ $row = mysqli_fetch_all($query, MYSQLI_ASSOC);
             <div class="card-body">
                 <h5 class="card-title">Data Instructors</h5>
                 <div class="mb-3" align="right">
-                    <a href="?page=tambah-user" class="btn btn-primary">Add Instructor</a>
+                    <a href="?page=tambah-instructor" class="btn btn-primary">Add Instructor</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered">
@@ -34,7 +34,7 @@ $row = mysqli_fetch_all($query, MYSQLI_ASSOC);
                                 <tr>
                                     <td><?php echo $index += 1; ?></td>
                                     <td><?php echo $data['name'] ?></td>
-                                    <td><?php echo $data['gender'] ?></td>
+                                    <td><?php echo $data['gender'] == 1 ? 'Women':'Man' ?></td>
                                     <td><?php echo $data['education'] ?></td>
                                     <td><?php echo $data['phone'] ?></td>
                                     <td><?php echo $data['email'] ?></td>
