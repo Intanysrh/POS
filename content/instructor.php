@@ -34,14 +34,15 @@ $row = mysqli_fetch_all($query, MYSQLI_ASSOC);
                                 <tr>
                                     <td><?php echo $index += 1; ?></td>
                                     <td><?php echo $data['name'] ?></td>
-                                    <td><?php echo $data['gender'] == 1 ? 'Women':'Man' ?></td>
+                                    <td><?php echo $data['gender'] == 1 ? 'Women' : 'Man' ?></td>
                                     <td><?php echo $data['education'] ?></td>
                                     <td><?php echo $data['phone'] ?></td>
                                     <td><?php echo $data['email'] ?></td>
                                     <td><?php echo $data['address'] ?></td>
                                     <td>
-                                        <a href="?page=tambah-instructor&edit=<?php echo $data['id'] ?>" class="btn btn-success btn-sm">Edit</a>
-                                        <a onclick="return confirm ('Are you sure?')" href="?page=tambah-instructor&delete=<?php echo $data['id'] ?>" class="btn btn-warning btn-sm">Delete</a>
+                                        <a href="?page=tambah-instructor-major&id=<?php echo $data['id'] ?>" class="btn btn-warning btn-sm">Add Major</a>
+                                        <a href="?page=tambah-instructor&edit=<?php echo $data['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
+                                        <a onclick="return confirm ('Are you sure?')" href="?page=tambah-instructor&delete=<?php echo $data['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

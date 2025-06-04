@@ -13,7 +13,7 @@ if (isset($_POST['name'])) {
     // jika ada parameter bernama edit, maka jalankan perintah edit/update. Kalo tidak ada, mnaka tambahkan data baru/insert.
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $password = sha1($_POST['password']);
     $id_user = isset($_GET['edit']) ? $_GET['edit'] : '';
 
     if (!isset($_GET['edit'])) {

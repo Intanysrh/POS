@@ -67,8 +67,8 @@ include 'config/koneksi.php';
         </div><!-- End Page Title -->
 
         <section class="section">
-            <?php echo isset($_GET['page']) ? str_replace("-", " ", ucfirst($_GET['page'])) : 'Home' ?>
-            </div>
+            <?php isset($_GET['page']) ? str_replace("-", " ", ucfirst($_GET['page'])) : 'Home' ?>
+
             <div class="card-body">
                 <?php
                 if (isset($_GET['page'])) {
@@ -80,9 +80,8 @@ include 'config/koneksi.php';
                 } else {
                     include "content/dashboard.php";
                 }
-
                 ?>
-
+            </div>
 
         </section>
 
