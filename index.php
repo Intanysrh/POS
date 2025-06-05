@@ -5,15 +5,21 @@ include 'config/koneksi.php';
 if (isset($_POST['email'])) {
     $email = $_POST['email'];
     $password = sha1($_POST['password']);
+    $role = $_POST['role'];
+
+    if ($role == 1) {
+        $queryLogin = mysqli_query($config, "SELECT * FROM instructors WHERE email='$email' AND password='$password'");
+    } else {
+        $queryLogin = mysqli_query($config, "SELECT * FROM users WHERE email='$email' AND password = '$password'");
+    }
 
     // tampilkan semua data dari table user dimana diambil dari orang yg input email, dan password diambil dari orang yg input password 
-    $queryLogin = mysqli_query($config, "SELECT * FROM users WHERE email='$email' AND password = '$password' ");
     // jika data ditemukan, mysqli_num_rows("hasil query")
-    if (mysqli_num_rows($queryLogin) > 0) {
+    if (mysqli_num_rows($queryLogin) == 1) {
         // header itu guna nya untuk me-redirect atau melempar ke halaman lain.
 
         $rowLogin = mysqli_fetch_assoc($queryLogin);
-        $_SESSION['ID_USER'] = $rowLogin['id_user'];
+        $_SESSION['ID_USER'] = $rowLogin['id'];
         $_SESSION['NAME'] = $rowLogin['name'];
 
         header("location:home.php");
@@ -105,6 +111,17 @@ if (isset($_POST['email'])) {
                                             <label for="yourPassword" class="form-label">Password</label>
                                             <input type="password" name="password" class="form-control" id="yourPassword" required>
                                             <div class="invalid-feedback">Please enter your password!</div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="yourRole" class="form-label">Role *</label>
+                                            <select name="role" id="yourRole" class="form-control" required>
+                                                <option value="">Select Role</option>
+                                                <option value="1">Instructor</option>
+                                                <option value="2">Student</option>
+                                                <option value="3">Others</option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select your role!</div>
                                         </div>
 
                                         <div class="col-12">

@@ -13,7 +13,7 @@ if (isset($_POST['name'])) {
     // jika ada parameter bernama edit, maka jalankan perintah edit/update. Kalo tidak ada, mnaka tambahkan data baru/insert.
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $password = sha1($_POST['password']);
+    $password = isset($_POST['password']) ? sha1($_POST['password']) : '';
     $id_user = isset($_GET['edit']) ? $_GET['edit'] : '';
 
     if (!isset($_GET['edit'])) {
@@ -48,7 +48,7 @@ $rowEdit = mysqli_fetch_assoc($queryEdit);
                     </div>
                     <div class="mb-3">
                         <label for="">Password *</label>
-                        <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
+                        <input type="password" class="form-control" name="password" placeholder="Enter your password" <?php echo empty($_GET['edit']) ? 'required' : '' ?>>
                     </div>
                     <div class="mb-3">
                         <input type="submit" class="btn btn-success" name="save" value="save">
