@@ -30,7 +30,7 @@ if (isset($_POST['email'])) {
     }
 }
 
-$queryRoles = mysqli_query($config, "SELECT * FROM roles ORDER BY id DESC");
+$queryRoles = mysqli_query($config, "SELECT * FROM roles WHERE name IN ('Instructor','Students') ORDER BY id DESC");
 $rowRoles = mysqli_fetch_all($queryRoles, MYSQLI_ASSOC);
 
 ?>
@@ -125,6 +125,8 @@ $rowRoles = mysqli_fetch_all($queryRoles, MYSQLI_ASSOC);
                                                 <?php foreach ($rowRoles as $role): ?>
                                                     <option value="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></option>
                                                 <?php endforeach ?>
+                                                <option value="0">Lainnya</option>
+
                                                 <!-- <option value="1">Instructor</option>
                                                 <option value="2">Student</option>
                                                 <option value="3">Others</option> -->

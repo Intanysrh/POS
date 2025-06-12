@@ -28,8 +28,9 @@ $row = mysqli_fetch_all($query, MYSQLI_ASSOC);
                                     <td><?php echo $index += 1; ?></td>
                                     <td><?php echo $data['name'] ?></td>
                                     <td>
-                                        <a href="?page=tambah-role&edit=<?php echo $data['id'] ?>" class="btn btn-success btn-sm">Edit</a>
-                                        <a onclick="return confirm ('Are you sure?')" href="?page=tambah-role&delete=<?php echo $data['id'] ?>" class="btn btn-warning btn-sm">Delete</a>
+                                        <a href="?page=tambah-role&add-role-menu=<?php echo $data['id'] ?>" class="btn btn-success btn-sm">Add Role Menu</a>
+                                        <a href="?page=tambah-role&edit=<?php echo $data['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
+                                        <a onclick="return confirm ('Are you sure?')" href="?page=tambah-role&delete=<?php echo $data['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
