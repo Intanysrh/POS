@@ -40,11 +40,28 @@ if (isset($_POST['id_role'])) {
     $insert = mysqli_query($config, "INSERT INTO user_roles (id_role, id_user) VALUES('$id_role', '$id_user')");
     header("location:?page=tambah-user&add-user-role=" . $id_user . "add-role-berhasil");
 }
-// else {
-//     $update = mysqli_query($config, "UPDATE users SET name = '$name', email = '$email', password = '$password' WHERE id = '$id_user'");
-//     header("location:?page=tambah-user&add-user-role=" . $id_user . "add-role-gagal");
+
+$queryProducts = mysqli_query($config, "SELECT * FROM products ORDER BY id DESC");
+$rowProducts = mysqli_fetch_all($queryProducts, MYSQLI_ASSOC);
+
+// BUAT NO TRANSACTION
+$queryNoTrans = mysqli_query($config, "SELECT MAX(id) as id_trans FROM transactions");
+$rowNoTrans = mysqli_fetch_assoc($queryNoTrans);
+$id_trans = $rowNoTrans['id_trans'];
+$id_trans++;
+
+// if(mysqli_num_rows($queryNoTrans)>0){
+//     $id_trans=$rowNoTrans['$id_trans']+1;
+// } else{
+//     $id_trans=1;
 // }
 
+$format_no = "TR";
+$date = date("dmy");
+$increment_number = sprintf("%03s", $id_trans);
+$no_transaction = $format_no . "-" . $date . "-" . $increment_number;
+// $no_transaction=$format_no."-".$data."-".STR_PAD_LEFT);
+$no_transaction = "TR" . "-" . date("dmy") . "-" . $increment_number;
 ?>
 
 <div class="row">
@@ -61,7 +78,7 @@ if (isset($_POST['id_role'])) {
                 <h5 class="card-title"><?php echo $title ?></h5>
                 <?php if (isset($_GET['add-user-role'])): ?>
                     <div align="right" class="mb-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Role</button>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Transaction</button>
                     </div>
                     <table class="table table-bordered">
                         <thead>
@@ -86,18 +103,50 @@ if (isset($_POST['id_role'])) {
                     </table>
                 <?php else: ?>
                     <form action="" method="post">
-                        <div class="mb-3">
-                            <label for="">Full Name *</label>
-                            <input type="text" class="form-control" name="name" placeholder="Enter your name" value="<?php echo isset($rowEdit['name']) ? ($rowEdit['name']) : ''; ?>" required>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label for="">No Transaction *</label>
+                                    <input type="text" class="form-control" name="no_transaction" value="<?= $no_transaction ?>" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="">Product</label>
+                                    <select name="" id="id_product" class="form-control">
+                                        <option value="">Select One</option>
+                                        <?php foreach ($rowProducts as $key => $data): ?>
+                                            <option value="<?php echo $data['id'] ?>"><?php echo $data['name'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label for="">Cashier *</label>
+                                    <input value="<?php echo $_SESSION['NAME'] ?>" type="text" class="form-control" readonly>
+                                    <input type="hidden" name="id_user" value="<?php echo $_SESSION['ID_USER'] ?>">
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="">Email *</label>
-                            <input type="email" class="form-control" name="email" placeholder="Enter your email" value="<?php echo isset($rowEdit['email']) ? ($rowEdit['email']) : ''; ?>" required>
+
+                        <div align="right" class="mb-3">
+                            <button type="button" class="btn btn-primary addRow">Add Row</button>
                         </div>
-                        <div class="mb-3">
-                            <label for="">Password *</label>
-                            <input type="password" class="form-control" name="password" placeholder="Enter your password" <?php echo empty($_GET['edit']) ? 'required' : '' ?>>
-                        </div>
+                        <table class="table" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Product Name</th>
+                                    <th>Qty</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+
                         <div class="mb-3">
                             <input type="submit" class="btn btn-success" name="save" value="save">
                         </div>
@@ -107,7 +156,7 @@ if (isset($_POST['id_role'])) {
         </div>
     </div>
 </div>
-
+<!-- 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -134,4 +183,58 @@ if (isset($_POST['id_role'])) {
             </form>
         </div>
     </div>
-</div>
+</div> -->
+
+<script>
+    // var, let, const, var: ketika nilainya tidak ada tidak error, kalo let harus mempunyai nilai.
+    // const: nilai tidak boleh berubah. ex: 
+    // const name = bambang;
+    // name = reza;
+    //  ini tuh salah karena nilai nya beda.
+
+    // const button = document.getElementById('addRow');
+    // const button = document.getElementsByClassName('addRow');
+    const button = document.querySelector('.addRow');
+    const tbody = document.querySelector('#myTable tbody');
+    // const button = document.querySelector('#button');
+    // button.textContent = "Duarrr";
+    // button.style.color = "red";
+
+    let no = 1;
+    button.addEventListener("click", function() {
+        // alert('duar');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+        <td>${no}</td>
+        <td><input type='hidden' name='id_product[]'</td>
+        <td><input type='number' name='qty[]' value='0'</td>
+        <td><input type='hidden' name='total[]'</td>
+        <td><button type='button' class='btn btn-danger btn-sm removeRow'>Delete
+        </button></td>
+        `;
+
+        tbody.appendChild(tr);
+        no++;
+    });
+
+    tbody.addEventListener('click', function(e) {
+        if (e.target.classList.contains('removeRow')) {
+            e.target.closest("tr").remove();
+        }
+
+        updateNumber()
+
+    });
+
+    function updateNumber() {
+        const rows = tbody.querySelectorAll("tr");
+        console.log(rows);
+
+        rows.forEach(function(row, index) {
+            console.log(index);
+            row.cells[0].textContent = index + 1;
+        });
+
+        no = rows.length + 1;
+    }
+</script>

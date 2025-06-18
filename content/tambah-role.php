@@ -99,7 +99,7 @@ $rowEdit = mysqli_fetch_assoc($queryEdit);
                         <input type="text" class="form-control" name="name" placeholder="Enter your role" value="<?php echo isset($_GET['edit']) ? ($rowEdit['name']) : ''; ?>" required>
             </div>
             <div class="mb-3">
-                <input type="submit" class="btn btn-success" name="save" value="save">
+                <input type="submit" class="btn btn-success" name="simpan" value="save">
             </div>
             </form>
         <?php endif ?>

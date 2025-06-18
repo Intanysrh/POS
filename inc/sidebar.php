@@ -1,6 +1,9 @@
 <?php include 'config/koneksi.php';
-$id_roles = isset($_SESSION['ID_ROLE']) ? $_SESSION['ID_ROLE'] : '';
-$queryMainMenu = mysqli_query($config, "SELECT DISTINCT menus.* FROM menus JOIN menu_roles ON menus.id = menu_roles.id_menu JOIN roles ON roles.id=menu_roles.id_roles WHERE menu_roles.id_roles = '$id_roles' 
+$id_user = isset($_SESSION['ID_USER']) ? $_SESSION['ID_USER'] : '';
+$queryMainMenu = mysqli_query($config, "SELECT DISTINCT menus.* FROM menus 
+JOIN menu_roles ON menus.id = menu_roles.id_menu 
+JOIN user_roles ON user_roles.id_role=menu_roles.id_roles 
+WHERE user_roles.id_user = '$id_user' 
 AND (parent_id = 0 OR parent_id='')
 ");
 $MainMenus = mysqli_fetch_all($queryMainMenu, MYSQLI_ASSOC);
@@ -17,8 +20,13 @@ $MainMenus = mysqli_fetch_all($queryMainMenu, MYSQLI_ASSOC);
 
             <?php
             $id_menu = $mainMenu['id'];
-            $querySubMenu = mysqli_query($config, "SELECT DISTINCT menus.* FROM menus JOIN menu_roles ON menus.id = menu_roles.id_menu JOIN roles ON roles.id=menu_roles.id_roles WHERE menu_roles.id_roles = '$id_roles' AND parent_id='$id_menu' ORDER BY urutan ASC");
+            $querySubMenu = mysqli_query($config, "SELECT DISTINCT menus.* FROM menus 
+            JOIN menu_roles ON menus.id = menu_roles.id_menu 
+            JOIN user_roles ON user_roles.id_role=menu_roles.id_roles 
+WHERE user_roles.id_user = '$id_user' 
+            AND parent_id='$id_menu' ORDER BY urutan ASC");
             // print_r($querySubMenu);
+
             // die;
             // print_r($mainMenu['name']);
             // die;
