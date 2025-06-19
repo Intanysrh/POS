@@ -2,6 +2,21 @@
 $query = mysqli_query($config, "SELECT users.name, transactions.* FROM transactions LEFT JOIN users ON users.id=transactions.id_user ORDER BY id DESC");
 
 $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
+
+if (isset($_GET['delete'])) {
+    $idDel = $_GET['delete'];
+
+    $del = mysqli_query($config, "DELETE FROM transactions WHERE id='$idDel'");
+    if ($del) {
+        header("location:?page=pos");
+        exit();
+    }
+}
+
+if (isset($_POST['add_transaction'])) {
+    header("location:?page=tambah-pos");
+}
+
 ?>
 
 <div class="row">
@@ -10,7 +25,7 @@ $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
             <div class="card-body">
                 <h5 class="card-title">Data Transaction</h5>
                 <div align="right" class="mb-3">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Transaction</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" name="add_transaction">Add Transaction</button>
                 </div>
                 <table class="table table-bordered">
                     <thead>
@@ -19,20 +34,19 @@ $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
                             <th>No Transaction</th>
                             <th>Cashier Name</th>
                             <th>Sub Total</th>
-                            <th></th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($rows as $index => $row): ?>
                             <tr>
                                 <td><?php echo $index = 1 ?></td>
-                                <td><?php echo $row['name'] ?></td>
                                 <td><?php echo $row['no_transaction'] ?></td>
                                 <td><?php echo $row['name'] ?></td>
-                                <td><?php echo "Rp " . $row['subtotal'] ?></td>
+                                <td><?php echo "Rp " . $row['sub_total'] ?></td>
                                 <td>
-                                    <a href="?page=tambah-pos&print=<?php echo $row['id'] ?>" class="btn btn-primary btn-sm">Print</a>
-                                    <a onclick="return confirm('Are you sure?')" href="" class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="?page=print-pos&print=<?php echo $row['id'] ?>" class="btn btn-primary btn-sm">Print</a>
+                                    <a onclick="return confirm('Are you sure?')" href="?page=pos&delete=<?php echo $row['id'] ?>" class="btn btn-danger btn-sm" name="delete">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach ?>
