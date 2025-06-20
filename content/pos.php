@@ -45,7 +45,7 @@ if (isset($_POST['add_transaction'])) {
                                 <td><?php echo $row['name'] ?></td>
                                 <td><?php echo "Rp " . $row['sub_total'] ?></td>
                                 <td>
-                                    <a href="?page=print-pos&print=<?php echo $row['id'] ?>" class="btn btn-primary btn-sm">Print</a>
+                                    <a href="print.php?id=<?php echo $row['id'] ?>" class="btn btn-primary btn-sm">Print</a>
                                     <a onclick="return confirm('Are you sure?')" href="?page=pos&delete=<?php echo $row['id'] ?>" class="btn btn-danger btn-sm" name="delete">Delete</a>
                                 </td>
                             </tr>
